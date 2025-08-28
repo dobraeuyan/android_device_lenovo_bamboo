@@ -14,10 +14,17 @@ Shipped Android Version | 5.0.1
 Storage | 16 GB
 MicroSD | Up to 200 GB
 Battery | Li-Ion 6200 mAh (non-removable)
-Display | 1280x800 pixels, 8 inches (~190 PPI density)
+Display | 1280x800 pixels, 8" (~190 PPI) / 10" (~150 PPI)
 Rotating Camera  | 10 MP
 
 ![Lenovo Yoga Tab 3](https://p1-ofp.static.pub/medias/bWFzdGVyfHJvb3R8NjQ5NDZ8aW1hZ2UvcG5nfGg5ZS9oMzEvOTI4ODUwNzY4Njk0Mi5wbmd8MjYwNDUwODI0NWI5YjI1ODA3ZmMwNmI3MDU1ZmQwY2Q0ZjVkNTU1MjVhY2U3ZWUzOWY4MjBiOWY3MzMxMmQ0Mw/bWFzdGVyfH.png "Lenovo Yoga Tab 3")
+
+| Codename                  | Variant         |
+|---------------------------|-----------------|
+| **YT3-850F, YT3-850M**              | WiFi Only 8" |
+| **YT3-850L**             | LTE 8" |
+| **YT3-X50F, YT3-X50M**              | WiFI Only 10" |
+| **YT3-X50L**              | LTE 10" |
 
 | Feature                   | Status          |
 |---------------------------|-----------------|
