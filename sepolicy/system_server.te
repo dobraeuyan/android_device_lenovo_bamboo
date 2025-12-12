@@ -1,0 +1,2 @@
+allow system_server sensors_persist_file:dir { search getattr open read };
+allow system_server sensors_persist_file:file { getattr open read };

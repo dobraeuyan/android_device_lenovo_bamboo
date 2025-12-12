@@ -1,0 +1,2 @@
+# Property for remote storage control.
+type time_prop, property_type;

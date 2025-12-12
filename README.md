@@ -37,19 +37,21 @@ Rotating Camera  | 10 MP
 | **WiFi**                  | :heavy_check_mark: |
 | **Bluetooth**             | :heavy_check_mark: |
 | **GPS**                   | :heavy_check_mark: |
-| **Camera Photos**         | Partially |
-| **Videocamera**           | Partially |
-| **Audio**                 |  |
-| **Jack**                  |  |
-| **Microphone**            |  |
+| **Camera Photos**         | :heavy_check_mark: |
+| **Videocamera**           | :heavy_check_mark: |
+| **Audio**                 | :heavy_check_mark: |
+| **Jack**                  | :heavy_check_mark: |
+| **Microphone**            | :heavy_check_mark: |
 | **Vibration**             | :heavy_check_mark: |
 | **USB**                   | :heavy_check_mark: |
+| **RIL (SMS-Calls)**       |  |
+| **Mobile Data**           |  |
 | **Buttons**               | :heavy_check_mark: |
 | **LED Button**            | :heavy_check_mark: |
 | **Rotation**              | :heavy_check_mark: |
 | **Light Sensor**          | :heavy_check_mark: |
 | **Compass**               | :heavy_check_mark: |
 | **Thermal**               | :heavy_check_mark: |
-| **FM Radio**              |  |
-| **SELinux enforced**      |  |
+| **FM Radio**              | :heavy_check_mark: |
+| **SELinux enforced**      | :heavy_check_mark: |
 

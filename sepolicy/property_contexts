@@ -1,0 +1,2 @@
+# Time daemon
+persist.sys.time_genoff		u:object_r:time_prop:s0

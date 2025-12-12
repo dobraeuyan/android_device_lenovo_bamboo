@@ -104,13 +104,12 @@ TARGET_RECOVERY_DEVICE_MODULES := libinit_bamboo
 
 # Kernel
 BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_CMDLINE := androidboot.console=ttyHSL0 androidboot.hardware=qcom ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := androidboot.console=ttyHSL0 androidboot.hardware=bamboo ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci
 BOARD_KERNEL_IMAGE_NAME := zImage-dtb
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
 TARGET_KERNEL_ARCH := arm
-TARGET_KERNEL_SOURCE := kernel/qcom/caf
-#TARGET_KERNEL_CONFIG := msm8909_lxf_p5000_c02_defconfig
+TARGET_KERNEL_SOURCE := kernel/lenovo/bamboo
 TARGET_KERNEL_CONFIG := lineage_bamboo_defconfig
 
 # Keymaster
@@ -127,8 +126,7 @@ TARGET_USES_MEDIA_EXTENSIONS := true
 MALLOC_SVELTE := true
 
 # OTA
-TARGET_OTA_ASSERT_DEVICE := msm8909,bamboo,YT3-850F,YT3-850M,YT3-850L,yt3-850f,yt3-850m,yt3-850l, \
-	YT3-X50F,YT3-X50M,YT3-X50L,yt3-x50f,yt3-x50m,yt3-x50l
+TARGET_OTA_ASSERT_DEVICE := msm8909,bamboo,YT3-850F,YT3-850M,YT3-850L,yt3-850f,yt3-850m,yt3-850l,YT3-X50F,YT3-X50M,YT3-X50L,yt3-x50f,yt3-x50m,yt3-x50l
 
 
 # Peripheral manager
