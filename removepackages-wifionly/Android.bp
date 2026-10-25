@@ -1,0 +1,16 @@
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+android_app {
+    name: "RemovePackagesBambooWifi",
+    manifest: "AndroidManifest.xml",
+    certificate: "platform",
+    sdk_version: "current",
+
+    dex_preopt: {
+        enabled: false,
+    },
+    overrides: [
+        "TeleService",
+    ],
+}
