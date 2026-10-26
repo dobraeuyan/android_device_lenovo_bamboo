@@ -13,8 +13,6 @@ BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
 
 TARGET_KERNEL_ADDITIONAL_CONFIG := lineage_bamboo_defconfig
 BOARD_KERNEL_CMDLINE += phy_msm_usb.dcp_max_current=2000
-BOARD_KERNEL_CMDLINE += earlyprintk loglevel=8
-BOARD_KERNEL_CMDLINE += ignore_loglevel
 TARGET_OTA_ASSERT_DEVICE := msm8909,bamboo,YT3-850F,yt3-850f
 
 TARGET_VENDOR_PROP += device/lenovo/bamboo/vendor.prop
