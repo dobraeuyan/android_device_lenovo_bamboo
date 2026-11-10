@@ -24,3 +24,5 @@ TARGET_RECOVERY_FSTAB := device/lenovo/bamboo/rootdir/etc/recovery.fstab
 TARGET_RECOVERY_DENSITY := mdpi
 
 BOARD_SEPOLICY_DIRS += device/lenovo/bamboo/sepolicy
+
+TARGET_WCNSS_WLAN_NV_IN_PERSIST := false

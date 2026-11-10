@@ -63,3 +63,5 @@ vendor/firmware/venus.mbn|e7bba6cbf95d3e2f79d923a9856fa9ab4bcc6e8e
 vendor/firmware/venus.mdt|fd411d52a4ed27b26246a1d3107f4299d43f73a5
 
 etc/thermal-engine.conf:vendor/etc/thermal-engine.conf
+
+etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin:vendor/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin
