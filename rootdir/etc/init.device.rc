@@ -1,6 +1,17 @@
-on post-fs
-    write /sys/module/firmware_class/parameters/path /mnt/fwmt/image
+on boot
+    chown system system /sys/class/leds/white-notification/brightness
+    chown system system /sys/class/leds/white-notification/blink
+    chmod 0664 /sys/class/leds/white-notification/brightness
+    chmod 0664 /sys/class/leds/white-notification/blink
 
+on charger
+    chown system system /sys/class/leds/white-notification/brightness
+    chown system system /sys/class/leds/white-notification/blink
+    chmod 0664 /sys/class/leds/white-notification/brightness
+    chmod 0664 /sys/class/leds/white-notification/blink
+    start vendor.charger_led
+
+on post-fs
     start vendor.qseecomd
 
     start vendor.qsee-kmload
@@ -23,3 +34,12 @@ service vendor.sensors-hal-1-0 /vendor/bin/hw/android.hardware.sensors@1.0-servi
 
 on property:sys.boot_completed=1
     restart vendor.camera-provider-2-4
+
+service vendor.charger_led /vendor/bin/charger_led
+    class charger
+    user system
+    group system
+    disabled
+
+on property:init.svc.bootanim=stopped
+    write /sys/class/leds/white-notification/brightness 0

@@ -44,18 +44,17 @@ char const*const LCD_FILE2
 char const*const WHITE_LED_FILE
         = "/sys/class/leds/white-notification/brightness";
 
-char const*const WHITE_TRIGGER_FILE
-        = "/sys/class/leds/white-notification/trigger";
+char const*const WHITE_BLINK_FILE
+        = "/sys/class/leds/white-notification/blink";
 
-char const*const WHITE_DELAY_ON_FILE
-        = "/sys/class/leds/white-notification/delay_on";
-
-char const*const WHITE_DELAY_OFF_FILE
-        = "/sys/class/leds/white-notification/delay_off";
+static char const* g_lcd_file = LCD_FILE;
 
 void init_globals(void)
 {
     pthread_mutex_init(&g_lock, NULL);
+    if (access(LCD_FILE, F_OK) != 0) {
+        g_lcd_file = LCD_FILE2;
+    }
 }
 
 static int
@@ -83,12 +82,20 @@ write_int(char const* path, int value)
 static int
 write_str(char const* path, char const* value)
 {
-    int fd = open(path, O_RDWR);
+    int fd;
+    static int already_warned = 0;
+
+    fd = open(path, O_RDWR);
     if (fd >= 0) {
-        ssize_t amt = write(fd, value, strlen(value));
+        ssize_t len = (ssize_t)strlen(value);
+        ssize_t amt = write(fd, value, (size_t)len);
         close(fd);
         return amt == -1 ? -errno : 0;
     } else {
+        if (already_warned == 0) {
+            ALOGE("write_str failed to open %s\n", path);
+            already_warned = 1;
+        }
         return -errno;
     }
 }
@@ -112,17 +119,17 @@ set_light_backlight(struct light_device_t* dev,
         struct light_state_t const* state)
 {
     int err = 0;
-    int brightness = rgb_to_brightness(state);
+    int brightness;
     if (!dev) {
         return -1;
     }
-
-    pthread_mutex_lock(&g_lock);
-    if (!access(LCD_FILE, F_OK)) {
-        err = write_int(LCD_FILE, brightness);
-    } else {
-        err = write_int(LCD_FILE2, brightness);
+    if (state->brightnessMode == BRIGHTNESS_MODE_LOW_PERSISTENCE) {
+        return -ENOSYS;
     }
+
+    brightness = rgb_to_brightness(state);
+    pthread_mutex_lock(&g_lock);
+    err = write_int(g_lcd_file, brightness);
     pthread_mutex_unlock(&g_lock);
     return err;
 }
@@ -131,12 +138,31 @@ static void
 set_white_locked(struct light_state_t const* state)
 {
     int onMS, offMS;
+    int brightness;
+
+    if (!is_lit(state)) {
+        write_int(WHITE_LED_FILE, 0);
+        return;
+    }
+
+    {
+        unsigned int alpha = (state->color >> 24) & 0xff;
+        brightness = alpha > 0 ? (int)alpha : rgb_to_brightness(state);
+    }
+    if (brightness <= 0) {
+        brightness = 1;
+    } else if (brightness > 255) {
+        brightness = 255;
+    }
 
     switch (state->flashMode) {
         case LIGHT_FLASH_TIMED:
-        case LIGHT_FLASH_HARDWARE:
             onMS = state->flashOnMS;
             offMS = state->flashOffMS;
+            break;
+        case LIGHT_FLASH_HARDWARE:
+            onMS = state->flashOnMS > 0 ? state->flashOnMS : 1000;
+            offMS = state->flashOffMS > 0 ? state->flashOffMS : 1000;
             break;
         case LIGHT_FLASH_NONE:
         default:
@@ -146,25 +172,31 @@ set_white_locked(struct light_state_t const* state)
     }
 
     if (onMS > 0 && offMS > 0) {
-        write_str(WHITE_TRIGGER_FILE, "timer");
-        write_int(WHITE_DELAY_ON_FILE, onMS);
-        write_int(WHITE_DELAY_OFF_FILE, offMS);
+        char buf[48];
+        snprintf(buf, sizeof(buf), "%d %d %d\n", onMS, offMS, brightness);
+        write_str(WHITE_BLINK_FILE, buf);
     } else {
-
-        write_str(WHITE_TRIGGER_FILE, "none");
-        write_int(WHITE_LED_FILE, is_lit(state) ? 255 : 0);
+        write_int(WHITE_LED_FILE, brightness);
     }
 }
 
 static void
 handle_white_locked(void)
 {
-    if (is_lit(&g_battery)) {
-        set_white_locked(&g_battery);
+    if (is_lit(&g_notification)) {
+        set_white_locked(&g_notification);
     } else if (is_lit(&g_attention)) {
         set_white_locked(&g_attention);
     } else {
-        set_white_locked(&g_notification);
+        struct light_state_t battery = g_battery;
+
+        if (is_lit(&battery) && battery.flashMode == LIGHT_FLASH_NONE &&
+            (battery.color & 0x00ffffff) != 0x00ff00) {
+            battery.flashMode = LIGHT_FLASH_TIMED;
+            battery.flashOnMS = 1000;
+            battery.flashOffMS = 1000;
+        }
+        set_white_locked(&battery);
     }
 }
 
